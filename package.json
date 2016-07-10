@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/seanspradlin/wedding-photographer/issues"
   },
-  "homepage": "https://github.com/seanspradlin/wedding-photographer#readme"
+  "homepage": "https://github.com/seanspradlin/wedding-photographer#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
