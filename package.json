@@ -1,0 +1,19 @@
+{
+  "name": "wedding-photographer",
+  "version": "1.0.0",
+  "description": "A web application for wedding guests to share and rate photos locally.",
+  "main": "server",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanspradlin/wedding-photographer.git"
+  },
+  "author": "Sean Spradlin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seanspradlin/wedding-photographer/issues"
+  },
+  "homepage": "https://github.com/seanspradlin/wedding-photographer#readme"
+}
