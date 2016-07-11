@@ -5,7 +5,7 @@ gulp.task('js-vendor', () => {
     .src([
       'node_modules/vue/dist/vue.*',
     ])
-    .pipe(gulp.dest('public/js'));
+    .pipe(gulp.dest('public/js/vendor'));
 });
 
 gulp.task('default', ['js-vendor']);
