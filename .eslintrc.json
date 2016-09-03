@@ -2,6 +2,12 @@
     "extends": "airbnb",
     "installedESLint": true,
     "plugins": [
-        "react"
-    ]
+        "vue"
+    ],
+    "env": {
+      "browser": true
+    },
+    "rules": {
+      "no-new": 0
+    }
 }
