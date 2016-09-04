@@ -11,28 +11,28 @@
 </head>
 
 <body>
-  <div class="container">
-    <section id="image-preview">
-      <div class="row">
-        <div class="col-md-12">
-          <img src="img/placeholder.png" alt="placeholder" id="picture" class="img-responsive img-rounded">
-        </div>
+  <template id="image-preview">
+    <div class="row">
+      <div class="col-md-12">
+        <img src="img/placeholder.png" alt="placeholder" id="picture" class="img-responsive img-rounded">
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="file" accept="image/*" capture="camera" id="file" class="inputfile" />
-          <label for="file" class="btn btn-primary btn-lg btn-block">
-             <i class="glyphicon glyphicon-camera" aria-hidden="true"></i>
-             Take a picture&hellip;
-          </label>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <input type="file" accept="image/*" capture="camera" id="file" class="inputfile" />
+        <label for="file" class="btn btn-primary btn-lg btn-block">
+          <i class="glyphicon glyphicon-camera" aria-hidden="true"></i>
+          Take a picture&hellip;
+        </label>
       </div>
-    </section>
+    </div>
+  </template>
+  <div id="app" class="container">
   </div>
   <script src="vendor/js/jquery.js"></script>
   <script src="vendor/js/bootstrap.js"></script>
   <script src="vendor/js/vue.js"></script>
-  <script src="js/example.js"></script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>
