@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "express": "registry:npm/express#4.14.0+20160815112707",
+    "mongoose": "registry:npm/mongoose#4.3.5+20160628072220"
+  },
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20160831021119"
+  }
+}
