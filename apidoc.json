@@ -1,0 +1,8 @@
+{
+  "name": "Wedding Photographer API",
+  "version": "1.0.0",
+  "description": "A REST API for the wedding photographer app",
+  "title": "Wedding Photographer API Documentation",
+  "url": "http://localhost:8080/api",
+  "sampleUrl": "http://localhost:8080/api"
+}
