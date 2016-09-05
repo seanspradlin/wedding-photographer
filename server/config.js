@@ -7,6 +7,7 @@ module.exports = {
     clientID: process.env.FACEBOOK_CLIENT_ID || '',
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
     callbackURL: process.env.FACEBOOK_CALLBACK_URL || 'http://localhost:8080/api/auth/facebook/callback',
+    profileFields: ['emails', 'displayName', 'name'],
   },
   logLevel: process.env.LOG_LEVEL || 'debug',
   session: {
