@@ -4,6 +4,7 @@
     "mongoose": "registry:npm/mongoose#4.3.5+20160628072220"
   },
   "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "node": "registry:dt/node#6.0.0+20160831021119",
     "passport": "registry:dt/passport#0.2.0+20160720063208"
   }
