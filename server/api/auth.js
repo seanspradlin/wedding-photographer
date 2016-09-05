@@ -3,16 +3,17 @@ const passport = require('../lib/passport');
 const utils = require('../lib/utils');
 const router = express.Router();
 const User = require('../models/user');
+const winston = require('winston');
 
 /**
  * @api {get} /auth Get current user profile
  * @apiName GetAuth
  * @apiGroup Auth
- * 
+ *
  * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
- * 
+ *
  * @apiUse UnauthorizedError
  */
 router.get('/', (req, res) => {
@@ -29,15 +30,15 @@ router.get('/', (req, res) => {
  * @api {post}  /auth/register  Submit registration information
  * @apiName PostAuthRegister
  * @apiGroup Auth
- * 
+ *
  * @apiParam  {String}  name      Name
  * @apiParam  {String}  email     Email
  * @apiParam  {String}  password  Password
- * 
+ *
  * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
- * 
+ *
  * @apiUse UnprocessableEntityError
  */
 router.post('/register', (req, res) => {
@@ -74,14 +75,14 @@ router.post('/register', (req, res) => {
  * @api {post}  /auth/login Login to an account
  * @apiName PostAuthLogin
  * @apiGroup Auth
- * 
+ *
  * @apiParam  {String}  email     Email
  * @apiParam  {String}  password  Password
- * 
+ *
  * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
- * 
+ *
  * @apiUse UnprocessableEntityError
  * @apiUse UnauthorizedError
  */
@@ -107,7 +108,7 @@ router.post('/login', (req, res) => {
         }
       })
     .catch(error => {
-      console.log(error);
+      winston.error(error);
       res.status(500).end();
     });
   }
@@ -122,6 +123,12 @@ router.post('/logout', (req, res) => {
   req.logout();
   res.status(204).end();
 });
+
+router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
+router.get('/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+}));
 
 module.exports = router;
 
