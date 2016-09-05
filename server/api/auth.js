@@ -1,5 +1,8 @@
 const express = require('express');
+const passport = require('../lib/passport');
+const utils = require('../lib/utils');
 const router = express.Router();
+const User = require('../models/user');
 
 /**
  * @api {get} /auth Get current user profile
@@ -7,14 +10,14 @@ const router = express.Router();
  * @apiGroup Auth
  * 
  * @apiSuccess  {ObjectId}  id        Unique user identifier
- * @apiSuccess  {String}    firstName First name
- * @apiSuccess  {String}    lastName  Last name
+ * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
  * 
- * @apiError Unauthorized
+ * @apiUse UnauthorizedError
  */
 router.get('/', (req, res) => {
-
+  if (req.isAuthenticated()) res.json(req.user);
+  else res.status(201).end();
 });
 
 /**
@@ -22,20 +25,34 @@ router.get('/', (req, res) => {
  * @apiName PostAuthRegister
  * @apiGroup Auth
  * 
- * @apiParam  {String}  firstName First name
- * @apiParam  {String}  lastName  Last name
+ * @apiParam  {String}  name      Name
  * @apiParam  {String}  email     Email
  * @apiParam  {String}  password  Password
  * 
  * @apiSuccess  {ObjectId}  id        Unique user identifier
- * @apiSuccess  {String}    firstName First name
- * @apiSuccess  {String}    lastName  Last name
+ * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
  * 
- * @apiError UnprocessableEntity
+ * @apiUse UnprocessableEntityError
  */
 router.post('/register', (req, res) => {
-
+  const required = ['name', 'email', 'password'];
+  if (!utils.checkProperties(required, req.body)) res.status(422).end();
+  else {
+    const user = new User();
+    user.local.name = req.body.name;
+    user.local.email = req.body.email;
+    user.local.password = user.generateHash(req.body.password);
+    user.save((error) => {
+      if (error) res.status(500).end();
+      else {
+        req.login(user, (error) => {
+          if (error) res.status(500).end();
+          else res.json(user);
+        });
+      }
+    });
+  }
 });
 
 /**
@@ -47,15 +64,20 @@ router.post('/register', (req, res) => {
  * @apiParam  {String}  password  Password
  * 
  * @apiSuccess  {ObjectId}  id        Unique user identifier
- * @apiSuccess  {String}    firstName First name
- * @apiSuccess  {String}    lastName  Last name
+ * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
  * 
- * @apiError UnprocessableEntity
- * @apiError Unauthorized
+ * @apiUse UnprocessableEntityError
+ * @apiUse UnauthorizedError
  */
 router.post('/login', (req, res) => {
-
+  passport.authenticate('local', (error, user, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).end();
+    } else if (!user) res.status(401).end();
+    else res.json(user);
+  });
 });
 
 /**
@@ -64,7 +86,8 @@ router.post('/login', (req, res) => {
  * @apiGroup Auth
  */
 router.post('/logout', (req, res) => {
-
+  req.logout();
+  res.status(204).end();
 });
 
 module.exports = router;
