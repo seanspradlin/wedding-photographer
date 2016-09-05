@@ -12,8 +12,8 @@ const app = express();
 mongoose.connect(config.db.url);
 
 app.use(helmet());
-app.use(express.static('../public'));
-app.use('/docs', express.static('./docs'));
+app.use(express.static(`${__dirname}/../public`));
+app.use('/docs', express.static(`${__dirname}/docs`));
 app.use(cookieParser());
 app.use(bodyParser());
 app.use(session(config.session));
