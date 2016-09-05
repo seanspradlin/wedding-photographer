@@ -18,6 +18,7 @@
   "homepage": "https://github.com/seanspradlin/wedding-photographer#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.6",
     "cookie-parser": "^1.4.3",

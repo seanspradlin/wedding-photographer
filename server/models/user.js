@@ -1,6 +1,9 @@
 'use strict';
 const mongoose = require('mongoose');
+const Promise = require('bluebird');
 const bcrypt = require('bcrypt-nodejs');
+
+mongoose.Promise = Promise;
 
 const userSchema = mongoose.Schema({
   name: String,
