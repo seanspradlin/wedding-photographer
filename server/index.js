@@ -7,7 +7,10 @@ const helmet = require('helmet');
 const passport = require('./lib/passport');
 const config = require('./config');
 const routes = require('./api');
+const winston = require('winston');
 const app = express();
+
+winston.level = config.logLevel;
 
 mongoose.connect(config.db.url);
 
@@ -24,6 +27,6 @@ app.use(passport.session());
 app.use('/api', routes);
 
 app.listen(config.port, () => {
-  console.log(`Server running on ${config.port}`);
+  winston.info(`Server running on ${config.port}`);
 });
 

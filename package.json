@@ -30,7 +30,8 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
-    "vue": "^1.0.26"
+    "vue": "^1.0.26",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^2.9.0",
