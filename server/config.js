@@ -4,9 +4,9 @@ module.exports = {
     url: process.env.MONGO_URL || 'mongodb://localhost/wedding-photographer',
   },
   facebook: {
-    clientId: process.env.FACEBOOK_CLIENT_ID || '',
+    clientID: process.env.FACEBOOK_CLIENT_ID || '',
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
-    callbackUrl: process.env.FACEBOOK_CALLBACK_URL || '',
+    callbackURL: process.env.FACEBOOK_CALLBACK_URL || 'http://localhost:8080/api/auth/facebook/callback',
   },
   logLevel: process.env.LOG_LEVEL || 'debug',
   session: {
