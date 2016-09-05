@@ -7,27 +7,17 @@ passport.serializeUser((user, done) => done(null, user.id));
 
 passport.deserializeUser(User.findById);
 
-passport.use('local-signup', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-  passReqToCallback: true,
-}, (req, email, password, done) => {
-  process.nextTick(() => {
-    User.findOne({ 'local.email': email }, (e, u) => {
-      if (e) done(e);
-      else if (u) done(null, false, 'email taken');
-      else {
-        const newUser = new User();
-        newUser.local.email = email;
-        newUser.local.password = newUser.generateHash(password);
-        newUser.save(e => {
-          if (e) throw e;
-          else done(null, newUser);
-        });
-      }
+passport.use('local', new LocalStrategy(
+  (email, password, done) => {
+    User.findOne({ email }, (error, user) => {
+      if (error) done(error);
+      else if (!user) done(null, false, { error: 'No user found' });
+      else if (!user.validPassword(password)) {
+        done(null, false, { error: 'Invalid password' });
+      } else done(null, user);
     });
-  });
-}));
+  }
+));
 
 module.exports = passport;
 
