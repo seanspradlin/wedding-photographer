@@ -39,16 +39,22 @@ router.post('/register', (req, res) => {
   const required = ['name', 'email', 'password'];
   if (!utils.checkProperties(required, req.body)) res.status(422).end();
   else {
-    const user = new User();
-    user.local.name = req.body.name;
-    user.local.email = req.body.email;
-    user.local.password = user.generateHash(req.body.password);
-    user.save((error) => {
+    User.findOne({ email: req.body.email }, (error, user) => {
       if (error) res.status(500).end();
+      else if (user) res.status(422).end();
       else {
-        req.login(user, (error) => {
+        const newUser = new User();
+        newUser.name = req.body.name;
+        newUser.email = req.body.email;
+        newUser.local.password = user.generateHash(req.body.password);
+        newUser.save((error) => {
           if (error) res.status(500).end();
-          else res.json(user);
+          else {
+            req.login(newUser, (error) => {
+              if (error) res.status(500).end();
+              else res.json(newUser);
+            });
+          }
         });
       }
     });
