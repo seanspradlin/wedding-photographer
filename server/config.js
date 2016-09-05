@@ -3,8 +3,9 @@ module.exports = {
   db: {
     url: process.env.MONGO_URL || 'mongodb://localhost/wedding-photographer',
   },
-  api: {
-    port: process.env.PORT || '8080',
+  session: {
+    secret: process.env.SESSION_SECRET || 'hunter2',
   },
+  port: process.env.PORT || '8080',
 };
 
