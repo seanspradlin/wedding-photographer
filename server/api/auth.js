@@ -17,7 +17,7 @@ const User = require('../models/user');
  */
 router.get('/', (req, res) => {
   if (req.isAuthenticated()) res.json(req.user);
-  else res.status(201).end();
+  else res.status(401).end();
 });
 
 /**
