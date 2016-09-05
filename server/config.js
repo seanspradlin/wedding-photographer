@@ -5,6 +5,8 @@ module.exports = {
   },
   session: {
     secret: process.env.SESSION_SECRET || 'hunter2',
+    resave: false,
+    saveUninitialized: true,
   },
   port: process.env.PORT || '8080',
 };
