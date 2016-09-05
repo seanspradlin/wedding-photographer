@@ -86,13 +86,31 @@ router.post('/register', (req, res) => {
  * @apiUse UnauthorizedError
  */
 router.post('/login', (req, res) => {
-  passport.authenticate('local', (error, user, info) => {
-    if (error) {
+  const required = ['email', 'password'];
+  if (!utils.checkProperties(required, req.body)) res.status(422).end();
+  else {
+    User.findOne({ email: req.body.email })
+      .then(user => {
+        if (!user) res.status(401).end();
+        else {
+          if (!user.validPassword(req.body.password)) res.status(401).end();
+          else {
+            req.login(user, (error) => {
+              if (error) res.status(500).end();
+              else res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+              });
+            });
+          }
+        }
+      })
+    .catch(error => {
       console.log(error);
       res.status(500).end();
-    } else if (!user) res.status(401).end();
-    else res.json(user);
-  });
+    });
+  }
 });
 
 /**
