@@ -9,15 +9,20 @@ const User = require('../models/user');
  * @apiName GetAuth
  * @apiGroup Auth
  * 
- * @apiSuccess  {ObjectId}  id        Unique user identifier
+ * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
  * 
  * @apiUse UnauthorizedError
  */
 router.get('/', (req, res) => {
-  if (req.isAuthenticated()) res.json(req.user);
-  else res.status(401).end();
+  if (req.isAuthenticated()) {
+    res.json({
+      _id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+    });
+  } else res.status(401).end();
 });
 
 /**
@@ -29,7 +34,7 @@ router.get('/', (req, res) => {
  * @apiParam  {String}  email     Email
  * @apiParam  {String}  password  Password
  * 
- * @apiSuccess  {ObjectId}  id        Unique user identifier
+ * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
  * 
@@ -46,13 +51,17 @@ router.post('/register', (req, res) => {
         const newUser = new User();
         newUser.name = req.body.name;
         newUser.email = req.body.email;
-        newUser.local.password = user.generateHash(req.body.password);
+        newUser.local.password = newUser.generateHash(req.body.password);
         newUser.save((error) => {
           if (error) res.status(500).end();
           else {
             req.login(newUser, (error) => {
               if (error) res.status(500).end();
-              else res.json(newUser);
+              else res.json({
+                _id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+              });
             });
           }
         });
@@ -69,7 +78,7 @@ router.post('/register', (req, res) => {
  * @apiParam  {String}  email     Email
  * @apiParam  {String}  password  Password
  * 
- * @apiSuccess  {ObjectId}  id        Unique user identifier
+ * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
  * 
