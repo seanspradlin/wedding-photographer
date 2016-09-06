@@ -11,6 +11,9 @@
 </head>
 
 <body>
+  <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+  </fb:login-button>
+  <div id="status"></div>
   <template id="image-preview">
     <div class="row">
       <div class="col-md-12">
