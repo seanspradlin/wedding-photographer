@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Wedding Photographer</title>
   <meta name="viewport" content="user-scalable=no, initial-scale=1.0, width=device-width, height=device-height">
+  <meta name="google-signin-client_id" content="956509663813-nunkflteag7bia9qqno8r7sihkpd7u82.apps.googleusercontent.com">
   <link rel="stylesheet" href="vendor/css/bootstrap.css" />
   <link rel="stylesheet" href="vendor/css/bootstrap-theme.css" />
   <link rel="stylesheet" href="css/main.css" />
@@ -13,6 +14,7 @@
 <body>
   <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
   </fb:login-button>
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
   <div id="status"></div>
   <template id="image-preview">
     <div class="row">
@@ -35,6 +37,7 @@
   <script src="vendor/js/jquery.js"></script>
   <script src="vendor/js/bootstrap.js"></script>
   <script src="vendor/js/vue.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="js/app.js"></script>
 </body>
 
