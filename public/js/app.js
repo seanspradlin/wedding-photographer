@@ -19,8 +19,23 @@ $(document).ready(function() {
     });
     FB.getLoginStatus(function(response) {
       $.post('api/auth/facebook', response.authResponse, 'json')
-        .then(console.log).fail(console.error);
+        .then(profile => {
+          console.log(profile);
+        })
+        .fail(error => {
+          console.error(error);
+        });
     });
   });
 });
 
+function onSignIn(googleUser) {
+  const token = googleUser.getAuthResponse().id_token;
+  $.post('api/auth/google', { accessToken: token }, 'json')
+    .then(profile => {
+      console.log(profile);
+    })
+    .fail(error => {
+      console.error(error);
+    });
+}
