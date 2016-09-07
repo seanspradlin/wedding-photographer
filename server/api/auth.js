@@ -174,7 +174,7 @@ router.post('/facebook', (req, res) => {
                         });
                       });
                     }
-                  })
+                  });
                 }
               });
             } else if (user.facebook.id === userInfo.id) {
@@ -189,6 +189,59 @@ router.post('/facebook', (req, res) => {
             winston.error(error);
             res.status(500).end();
           });
+      }
+    });
+  }
+});
+
+/**
+ * @api {post} /auth/google Login with Google
+ * @apiName PostAuthGoogle
+ * @apiGroup Auth
+ * @apiDescription Use Google to log in and then send that
+ * access token to generate a user session.
+ *
+ * @apiParam {String} accessToken Google account access token
+ * 
+ * @apiSuccess  {ObjectId}  _id       Unique user identifier
+ * @apiSuccess  {String}    name      Name
+ * @apiSuccess  {String}    email     Email
+ *
+ * @apiUse UnprocessableEntityError
+ * @apiUse UnauthorizedError
+ */
+router.post('/google', (req, res) => {
+  if (!req.body.accessToken) res.status(422).end();
+  else {
+    const uri = `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.body.accessToken}`;
+    request(uri, (error, rs, body) => {
+      if (error) {
+        winston.error(error);
+        res.status(500).end();
+      }
+      else {
+        if (body.aud !== config.google.appId) res.status(401).end();
+        else {
+          const newUser = new User();
+          newUser.name = body.name;
+          newUser.email = body.email;
+          newUser.google.id = body.sub;
+          newUser.save(error => {
+            if (error) {
+              winston.error(error);
+              res.status(500).end();
+            } else {
+              req.login(newUser, (error) => {
+                if (error) res.status(500).end();
+                else res.json({
+                  _id: newUser._id,
+                  name: newUser.name,
+                  email: newUser.email,
+                });
+              });
+            }
+          });
+        }
       }
     });
   }
