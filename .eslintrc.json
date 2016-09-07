@@ -5,7 +5,12 @@
         "vue"
     ],
     "env": {
-      "browser": true
+      "browser": true,
+      "jquery": true,
+      "node": true
+    },
+    "globals": {
+      "FB": true
     },
     "rules": {
       "no-new": 0,
