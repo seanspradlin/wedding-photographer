@@ -46,29 +46,35 @@ router.post('/register', (req, res) => {
   const required = ['name', 'email', 'password'];
   if (!utils.checkProperties(required, req.body)) res.status(422).end();
   else {
-    User.findOne({ 'local.email': req.body.email }, (error, user) => {
-      if (error) res.status(500).end();
-      else if (user) res.status(422).end();
-      else {
-        const newUser = new User();
-        newUser.name = req.body.name;
-        newUser.email = req.body.email;
-        newUser.local.email = req.body.email;
-        newUser.local.password = newUser.generateHash(req.body.password);
-        newUser.save((error) => {
-          if (error) res.status(500).end();
-          else {
-            req.login(newUser, (error) => {
-              if (error) res.status(500).end();
-              else res.json({
-                _id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
+    User.findOne({ 'local.email': req.body.email })
+      .then(user => {
+        if (user) res.status(422).end();
+        else {
+          const newUser = new User();
+          newUser.name = req.body.name;
+          newUser.email = req.body.email;
+          newUser.local.email = req.body.email;
+          newUser.local.password = newUser.generateHash(req.body.password);
+          newUser.save((error) => {
+            if (error) res.status(500).end();
+            else {
+              req.login(newUser, (error) => {
+                if (error) res.status(500).end();
+                else {
+                  res.json({
+                    _id: newUser._id,
+                    name: newUser.name,
+                    email: newUser.email,
+                  });
+                }
               });
-            });
-          }
-        });
-      }
+            }
+          });
+        }
+      })
+    .catch(error => {
+      winston.error(error);
+      res.status(500).end();
     });
   }
 });
@@ -100,19 +106,21 @@ router.post('/local', (req, res) => {
           else {
             req.login(user, (error) => {
               if (error) res.status(500).end();
-              else res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-              });
+              else {
+                res.json({
+                  _id: user._id,
+                  name: user.name,
+                  email: user.email,
+                });
+              }
             });
           }
         }
       })
-    .catch(error => {
-      winston.error(error);
-      res.status(500).end();
-    });
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
+      });
   }
 });
 
@@ -124,7 +132,7 @@ router.post('/local', (req, res) => {
  * send that access token to generate a user session.
  *
  * @apiParam {String} accessToken Facebook account access token
- * 
+ *
  * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
@@ -135,8 +143,8 @@ router.post('/local', (req, res) => {
 router.post('/facebook', (req, res) => {
   if (!req.body.accessToken) res.status(422).end();
   else {
-    const userUri = `https://graph.facebook.com/me`
-                  + `?fields=id,name,email`
+    const userUri = 'https://graph.facebook.com/me'
+                  + '?fields=id,name,email'
                   + `&client_id=${config.facebook.appId}`
                   + `&client_secret=${config.facebook.secret}`
                   + `&access_token=${req.body.accessToken}`;
@@ -147,31 +155,22 @@ router.post('/facebook', (req, res) => {
         User.findOne({ 'facebook.id': userInfo.id })
           .then(user => {
             if (!user) {
-              const tokenUri = `https://graph.facebook.com/oauth/access_token`
-                             + `?grant_type=fb_exchange_token`
-                             + `&client_id=${config.facebook.appId}`
-                             + `&client_secret=${config.facebook.secret}`
-                             + `&fb_exchange_token=${req.body.accessToken}`;
-              request(tokenUri, (e, rs, token) => {
-                if (e) res.stsatus(500).end();
-                else {
-                  const newUser = new User();
-                  newUser.name = userInfo.name;
-                  newUser.email = userInfo.email;
-                  newUser.facebook.id = userInfo.id;
-                  newUser.facebook.token = token.replace('access_token=', '');
-                  newUser.save(error => {
-                    if (error) {
-                      winston.error(error);
-                      res.status(500).end();
-                    } else {
-                      req.login(newUser, (error) => {
-                        if (error) res.status(500).end();
-                        else res.json({
-                          _id: newUser._id,
-                          name: newUser.name,
-                          email: newUser.email,
-                        });
+              const newUser = new User();
+              newUser.name = userInfo.name;
+              newUser.email = userInfo.email;
+              newUser.facebook.id = userInfo.id;
+              newUser.save(error => {
+                if (error) {
+                  winston.error(error);
+                  res.status(500).end();
+                } else {
+                  req.login(newUser, (error) => {
+                    if (error) res.status(500).end();
+                    else {
+                      res.json({
+                        _id: newUser._id,
+                        name: newUser.name,
+                        email: newUser.email,
                       });
                     }
                   });
@@ -202,7 +201,7 @@ router.post('/facebook', (req, res) => {
  * access token to generate a user session.
  *
  * @apiParam {String} accessToken Google account access token
- * 
+ *
  * @apiSuccess  {ObjectId}  _id       Unique user identifier
  * @apiSuccess  {String}    name      Name
  * @apiSuccess  {String}    email     Email
@@ -213,34 +212,56 @@ router.post('/facebook', (req, res) => {
 router.post('/google', (req, res) => {
   if (!req.body.accessToken) res.status(422).end();
   else {
-    const uri = `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.body.accessToken}`;
+    const uri = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
+              + `?id_token=${req.body.accessToken}`;
     request(uri, (error, rs, body) => {
       if (error) {
         winston.error(error);
         res.status(500).end();
-      }
-      else {
+      } else {
         if (body.aud !== config.google.appId) res.status(401).end();
         else {
-          const newUser = new User();
-          newUser.name = body.name;
-          newUser.email = body.email;
-          newUser.google.id = body.sub;
-          newUser.save(error => {
-            if (error) {
-              winston.error(error);
-              res.status(500).end();
-            } else {
-              req.login(newUser, (error) => {
-                if (error) res.status(500).end();
-                else res.json({
-                  _id: newUser._id,
-                  name: newUser.name,
-                  email: newUser.email,
+          User.findOne({ 'google.id': body.sub })
+            .then(user => {
+              if (!user) {
+                const newUser = new User();
+                newUser.name = body.name;
+                newUser.email = body.email;
+                newUser.google.id = body.sub;
+                newUser.save(error => {
+                  if (error) {
+                    winston.error(error);
+                    res.status(500).end();
+                  } else {
+                    req.login(newUser, (error) => {
+                      if (error) res.status(500).end();
+                      else {
+                        res.json({
+                          _id: newUser._id,
+                          name: newUser.name,
+                          email: newUser.email,
+                        });
+                      }
+                    });
+                  }
                 });
-              });
-            }
-          });
+              } else {
+                req.login(user, (error) => {
+                  if (error) res.status(500).end();
+                  else {
+                    res.json({
+                      _id: user._id,
+                      name: user.name,
+                      email: user.email,
+                    });
+                  }
+                });
+              }
+            })
+            .catch(error => {
+              winston.error(error);
+              res.status(500).next();
+            });
         }
       }
     });
