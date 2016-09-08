@@ -14,19 +14,17 @@ const userSchema = mongoose.Schema({
   },
   facebook: {
     id: String,
-    token: String,
   },
   google: {
     id: String,
-    token: String,
   },
 });
 
-userSchema.methods.generateHash = function(password) {
+userSchema.methods.generateHash = function generateHash(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-userSchema.methods.validPassword = function(password) {
+userSchema.methods.validPassword = function validPassword(password) {
   return bcrypt.compareSync(password, this.local.password);
 };
 
