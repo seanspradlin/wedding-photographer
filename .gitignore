@@ -5,3 +5,4 @@ server/docs/
 *~
 *.swp
 *.swo
+.vscode/
