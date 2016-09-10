@@ -1,11 +1,20 @@
 {
   "dependencies": {
+    "bluebird": "registry:npm/bluebird#3.4.1+20160909132857",
+    "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
     "express": "registry:npm/express#4.14.0+20160815112707",
-    "mongoose": "registry:npm/mongoose#4.3.5+20160628072220"
+    "gulp": "registry:npm/gulp#4.0.0-alpha.2+20160817105618",
+    "mongoose": "registry:npm/mongoose#4.3.5+20160628072220",
+    "request": "registry:npm/request#2.69.0+20160428223725"
   },
   "globalDependencies": {
-    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
-    "node": "registry:dt/node#6.0.0+20160831021119",
-    "passport": "registry:dt/passport#0.2.0+20160720063208"
+    "aws-sdk": "registry:dt/aws-sdk#0.0.0+20160908162406",
+    "bcrypt-nodejs": "registry:dt/bcrypt-nodejs#0.0.0+20160316155526",
+    "express-session": "registry:dt/express-session#0.0.0+20160819134112",
+    "jquery": "registry:dt/jquery#1.10.0+20160908203239",
+    "node": "registry:dt/node#6.0.0+20160909174046",
+    "passport": "registry:dt/passport#0.2.0+20160720063208",
+    "vue": "registry:dt/vue#1.0.21+20160720100422",
+    "winston": "registry:dt/winston#0.0.0+20160417152829"
   }
 }
