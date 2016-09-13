@@ -8,10 +8,11 @@
         "noImplicitAny": false,
         "removeComments": true,
         "moduleResolution": "node",
-        "outDir": ".dist",
-        "rootDir": "client/app"
+        "outDir": ".dist"
     },
-    "include": [
-        "client"
+    "exclude": [
+        "node_modules",
+        "typings",
+        ".dist"
     ]
 }
