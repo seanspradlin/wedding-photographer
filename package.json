@@ -4,7 +4,9 @@
   "description": "A web application for wedding guests to share and rate photos locally.",
   "main": "server",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "docs": "apidoc -i 'server/api' -o 'server/docs'",
+    "typings": "typings install"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "apidoc": "^0.16.1",
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-html": "^1.5.2",
