@@ -6,3 +6,4 @@ server/docs/
 *.swp
 *.swo
 .vscode/
+.dist/
