@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "docs": "apidoc -i 'server/api' -o 'server/docs'",
-    "typings": "typings install"
+    "typings": "typings install",
+    "start": "node server"
   },
   "repository": {
     "type": "git",
