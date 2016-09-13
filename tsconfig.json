@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "removeComments": true,
+        "moduleResolution": "node",
+        "outDir": ".dist",
+        "rootDir": "client/app"
+    },
+    "include": [
+        "client"
+    ]
+}
