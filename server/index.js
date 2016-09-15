@@ -16,7 +16,7 @@ mongoose.connect(config.db.url);
 
 app.use(helmet());
 app.use('/docs', express.static(`${__dirname}/docs`));
-app.use(express.static(`${__dirname}/../client`));
+app.use(express.static(`${__dirname}/../.dist`));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
