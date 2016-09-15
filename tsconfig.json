@@ -8,7 +8,7 @@
         "noImplicitAny": false,
         "removeComments": true,
         "moduleResolution": "node",
-        "outDir": ".dist"
+        "outDir": ".dist/app"
     },
     "exclude": [
         "node_modules",
