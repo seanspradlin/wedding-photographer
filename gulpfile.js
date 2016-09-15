@@ -1,13 +1,66 @@
 const gulp = require('gulp');
 
-gulp.task('js-vendor', () => {
+gulp.task('html', () => {
   gulp
     .src([
-      'node_modules/vue/dist/vue.*',
-      'node_modules/bootstrap/dist/js/*.*',
-      'node_modules/jquery/dist/jquery.*',
+      'client/**/*.html'
     ])
-    .pipe(gulp.dest('public/vendor/js'));
+    .pipe(gulp.dest('.dist'));
+});
+
+gulp.task('css', () => {
+  gulp
+    .src([
+      'client/**/*.css'
+    ])
+    .pipe(gulp.dest('.dist'));
+});
+
+gulp.task('js', () => {
+  gulp
+    .src([
+      'client/**/*.js'
+    ])
+    .pipe(gulp.dest('.dist'));
+});
+
+gulp.task('js-vendor', ['angular', 'rxjs', 'core-js',
+  'zone.js', 'reflect-metadata', 'systemjs']);
+
+gulp.task('angular', () => {
+  gulp
+    .src('node_modules/@angular/**/*.*')
+    .pipe(gulp.dest('.dist/dist/@angular'));
+});
+
+gulp.task('rxjs', () => {
+  gulp
+    .src('node_modules/rxjs/**/*.*')
+    .pipe(gulp.dest('.dist/dist/rxjs'));
+});
+
+gulp.task('core-js', () => {
+  gulp
+    .src('node_modules/core-js/**/*.*')
+    .pipe(gulp.dest('.dist/dist/core-js'));
+});
+
+gulp.task('zone.js', () => {
+  gulp
+    .src('node_modules/zone.js/**/*.*')
+    .pipe(gulp.dest('.dist/dist/zone.js'));
+});
+
+gulp.task('reflect-metadata', () => {
+  gulp
+    .src('node_modules/reflect-metadata/**/*.*')
+    .pipe(gulp.dest('.dist/dist/reflect-metadata'));
+});
+
+gulp.task('systemjs', () => {
+  gulp
+    .src('node_modules/systemjs/**/*.*')
+    .pipe(gulp.dest('.dist/dist/systemjs'));
 });
 
 gulp.task('css-vendor', () => {
@@ -15,7 +68,7 @@ gulp.task('css-vendor', () => {
     .src([
       'node_modules/bootstrap/dist/css/*.*',
     ])
-    .pipe(gulp.dest('public/vendor/css'));
+    .pipe(gulp.dest('.dist/dist'));
 });
 
 gulp.task('fonts-vendor', () => {
@@ -23,8 +76,8 @@ gulp.task('fonts-vendor', () => {
     .src([
       'node_modules/bootstrap/dist/fonts/*.*',
     ])
-    .pipe(gulp.dest('public/vendor/fonts'));
+    .pipe(gulp.dest('.dist/dist'));
 });
 
-gulp.task('default', ['js-vendor', 'css-vendor', 'fonts-vendor']);
+gulp.task('default', ['html', 'css', 'js', 'js-vendor', 'css-vendor', 'fonts-vendor']);
 
