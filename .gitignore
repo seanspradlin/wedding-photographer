@@ -8,3 +8,4 @@ server/docs/
 .vscode/
 .dist/
 env
+npm-debug.log
