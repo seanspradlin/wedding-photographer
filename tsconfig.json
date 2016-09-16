@@ -8,7 +8,13 @@
         "noImplicitAny": false,
         "removeComments": true,
         "moduleResolution": "node",
-        "outDir": ".dist/app"
+        "outDir": ".dist",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "core-js"
+        ]
     },
     "exclude": [
         "node_modules",
