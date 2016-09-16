@@ -35,9 +35,6 @@ gulp.task('js', () =>
     .pipe(gulp.dest('.dist'))
 );
 
-gulp.task('js-vendor', ['angular', 'rxjs', 'core-js',
-  'zone.js', 'reflect-metadata', 'systemjs']);
-
 gulp.task('angular', () =>
   gulp
     .src('node_modules/@angular/**/*.*')
@@ -90,5 +87,15 @@ gulp.task('fonts-vendor', () =>
     .pipe(gulp.dest('.dist/dist'))
 );
 
-gulp.task('default', ['html', 'css', 'js', 'js-vendor', 'css-vendor', 'fonts-vendor']);
+gulp.task('js-vendor', ['angular', 'rxjs', 'core-js',
+  'zone.js', 'reflect-metadata', 'systemjs']);
+
+gulp.task('watch', () =>
+  gulp.watch('client/**/*.*', ['compile'])
+);
+
+gulp.task('compile', ['typescript', 'html', 'css', 'js']);
+
+gulp.task('default', ['html', 'css', 'js', 'js-vendor', 'css-vendor',
+  'fonts-vendor', 'compile', 'watch']);
 
