@@ -15,7 +15,8 @@
     "typings": "typings install",
     "start": "node server",
     "compile": "tsc",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "gulp": "gulp"
   },
   "repository": {
     "type": "git",
