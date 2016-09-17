@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AccountModule } from './account/account';
-import { routing } from './app.routing';
-
+/* App Root */
 import { AppComponent } from './app.component';
+
+/* Feature Modules */
+import { DashboardModule } from './dashboard/dashboard.module'; 
+import { routing } from './app.routing';
 
 @NgModule({
   imports: [
+    DashboardModule,
     BrowserModule,
-    AccountModule,
     routing
   ],
-  declarations: [
-    AppComponent
-  ],
+  declarations: [ AppComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
