@@ -1,7 +1,6 @@
 import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
-const appRoutes: Routes = [
-
-];
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const routing: ModuleWithProviders = RouterModule.forRoot([
+  { path: '', redirectTo: 'account', pathMatch: 'full' }
+]);
