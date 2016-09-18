@@ -7,10 +7,13 @@ import { AccountComponent } from './account.component';
 import { LoginComponent } from './login.component';
 import { LogoutComponent } from './logout.component';
 
+import { AccountService } from './account.service';
+
 @NgModule({
   imports: [ FormsModule, HttpModule, routing ],
   declarations: [ AccountComponent, LoginComponent, LogoutComponent ],
-  exports: [ AccountComponent ]
+  exports: [ AccountComponent ],
+  providers: [ AccountService ]
 })
 export class AccountModule { }
 

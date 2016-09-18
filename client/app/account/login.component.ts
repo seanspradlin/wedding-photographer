@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { AccountService } from './account.service';
+
 @Component({
   selector: 'local-login',
   styleUrls: ['app/account/login.component.css'],
@@ -9,8 +11,12 @@ export class LoginComponent {
   email: string;
   password: string;
 
+  constructor(private accountService: AccountService) {};
+
   onSubmit(): void {
-    console.log(this.email, this.password);
+    this.accountService.localLogin(this.email, this.password)
+      .then(() => console.log('success'))
+      .catch(() => console.log('failure'));
   }
 }
 
